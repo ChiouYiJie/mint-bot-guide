@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,7 +38,7 @@
             background: var(--card-bg);
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            padding: 24px;
+            padding: 16px;
             box-sizing: border-box;
         }
 
@@ -48,49 +48,49 @@
             top: 0;
             background: var(--card-bg);
             z-index: 1000;
-            padding-top: 8px;
+            padding-top: 4px;
             padding-bottom: 12px;
             box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
             border-bottom: 1px solid var(--border-color);
-            margin-left: -24px;
-            margin-right: -24px;
-            padding-left: 24px;
-            padding-right: 24px;
+            margin-left: -16px;
+            margin-right: -16px;
+            padding-left: 16px;
+            padding-right: 16px;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin: 0;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .lang-container {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             background: white;
             border: 1px solid var(--border-color);
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 6px;
         }
 
         .lang-select {
             border: none;
             background: transparent;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             font-family: inherit;
             outline: none;
@@ -99,11 +99,11 @@
         .config-card {
             background: #eff6ff;
             border: 1px solid #bfdbfe;
-            padding: 16px 18px;
+            padding: 12px;
             border-radius: 10px;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            gap: 12px;
         }
 
         @media (max-width: 768px) {
@@ -115,7 +115,7 @@
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .input-group.full-width {
@@ -123,16 +123,16 @@
         }
 
         .input-group label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--text-muted);
         }
 
         .input-group input, .input-group select {
-            padding: 9px 12px;
+            padding: 8px 10px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             outline: none;
             background: white;
             font-family: inherit;
@@ -148,7 +148,7 @@
         .player-row {
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
 
@@ -161,18 +161,18 @@
         }
 
         .section-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            margin: 28px 0 14px 0;
+            margin: 20px 0 10px 0;
             color: var(--text-main);
-            border-left: 5px solid var(--primary);
-            padding-left: 10px;
+            border-left: 4px solid var(--primary);
+            padding-left: 8px;
         }
 
         .cmd-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             background: white;
             border-radius: 8px;
             overflow: hidden;
@@ -180,7 +180,7 @@
         }
 
         .cmd-table th, .cmd-table td {
-            padding: 12px 14px;
+            padding: 10px 12px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
@@ -190,14 +190,14 @@
             background-color: var(--code-bg);
             font-weight: 700;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .badge {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: 700;
             color: white;
             white-space: nowrap;
@@ -209,17 +209,17 @@
 
         .ctrl-box {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             flex-wrap: wrap;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .ctrl-box select, .ctrl-box input {
-            padding: 5px 8px;
+            padding: 4px 6px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background: #ffffff;
             font-family: inherit;
         }
@@ -227,22 +227,23 @@
         .cmd-code {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             background-color: var(--code-bg);
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 4px;
             font-weight: 600;
             color: #0f172a;
             display: inline-block;
             word-break: break-all;
+            font-size: 0.85rem;
         }
 
         .btn-copy {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             transition: all 0.2s;
             white-space: nowrap;
@@ -258,6 +259,9 @@
         }
 
         @media (max-width: 768px) {
+            body { padding: 6px; }
+            .container { padding: 10px; }
+            .sticky-top-panel { margin-left: -10px; margin-right: -10px; padding-left: 10px; padding-right: 10px; }
             .cmd-table, .cmd-table tbody, .cmd-table tr, .cmd-table td {
                 display: block;
                 width: 100%;
@@ -265,22 +269,23 @@
             }
             .cmd-table thead { display: none; }
             .cmd-table tr {
-                margin-bottom: 12px;
+                margin-bottom: 10px;
                 border: 1px solid var(--border-color);
                 border-radius: 8px;
                 padding: 8px;
+                background: #fff;
             }
             .cmd-table td {
                 border-bottom: none;
-                padding: 6px 8px;
+                padding: 4px 6px;
             }
             .cmd-table td::before {
                 content: attr(data-label);
                 font-weight: bold;
                 display: block;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 color: var(--text-muted);
-                margin-bottom: 2px;
+                margin-bottom: 1px;
             }
         }
     </style>
@@ -747,7 +752,7 @@
             document.getElementById('playerName').value = val;
             updateAll();
         }
-        select.selectedIndex = 0; // 重置選單狀態
+        select.selectedIndex = 0;
     }
 
     function getPrefix() {
@@ -811,12 +816,12 @@
 
                 tr.innerHTML = `
                     <td data-label="${t.thCmd}">
-                        <strong style="color:var(--primary); font-size:1rem;" id="name_${rowId}">${item.cmd}</strong>
+                        <strong style="color:var(--primary); font-size:0.95rem;" id="name_${rowId}">${item.cmd}</strong>
                     </td>
                     <td data-label="${t.thDesc}">
-                        <div>${t.desc[item.descKey] || ''}</div>
+                        <div style="font-size: 0.9rem;">${t.desc[item.descKey] || ''}</div>
                         <div class="ctrl-box" id="ctrl_${rowId}"></div>
-                        <div style="margin-top:6px;">
+                        <div style="margin-top:4px; font-size: 0.85rem;">
                             範例: <span class="cmd-code" id="code_${rowId}"></span>
                         </div>
                     </td>
@@ -845,46 +850,42 @@
             case 'transfer':
                 container.innerHTML = `
                     類型: <select id="sel_rss_${rowId}" onchange="updateAll()">
-                        <option value="">(所有資源)</option>
+                        <option value="">(所有)</option>
                         <option value="food">${t.types.food}</option>
                         <option value="stone">${t.types.stone}</option>
                         <option value="wood">${t.types.wood}</option>
                         <option value="ore">${t.types.ore}</option>
                         <option value="gold">${t.types.gold}</option>
                     </select>
-                    數量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:80px;" oninput="updateAll()">
+                    數量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:70px;" oninput="updateAll()">
                 `;
                 break;
             case 'amt_input':
                 container.innerHTML = `
-                    數量/all: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:80px;" oninput="updateAll()">
+                    數量/all: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:75px;" oninput="updateAll()">
                 `;
                 break;
             case 'donate_single':
-                container.innerHTML = `
-                    數量: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:80px;" oninput="updateAll()">
-                `;
-                break;
             case 'admin_single':
                 container.innerHTML = `
-                    數量: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:80px;" oninput="updateAll()">
+                    數量: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:75px;" oninput="updateAll()">
                 `;
                 break;
             case 'rss_multi':
             case 'admin_rss':
                 container.innerHTML = `
-                    糧:<input type="text" id="r_f_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
-                    石:<input type="text" id="r_s_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
-                    木:<input type="text" id="r_w_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
-                    礦:<input type="text" id="r_o_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
-                    金:<input type="text" id="r_g_${rowId}" value="0" style="width:45px;" oninput="updateAll()">
+                    糧:<input type="text" id="r_f_${rowId}" value="5M" style="width:40px;" oninput="updateAll()">
+                    石:<input type="text" id="r_s_${rowId}" value="5M" style="width:40px;" oninput="updateAll()">
+                    木:<input type="text" id="r_w_${rowId}" value="5M" style="width:40px;" oninput="updateAll()">
+                    礦:<input type="text" id="r_o_${rowId}" value="5M" style="width:40px;" oninput="updateAll()">
+                    金:<input type="text" id="r_g_${rowId}" value="0" style="width:40px;" oninput="updateAll()">
                 `;
                 break;
             case 'opt_chat':
                 container.innerHTML = `
                     <select id="sel_opt_${rowId}" onchange="updateAll()">
                         <option value="">(郵件寄送)</option>
-                        <option value="chat">chat (聯盟聊天室)</option>
+                        <option value="chat">chat (聊天室)</option>
                     </select>
                 `;
                 break;
@@ -892,25 +893,25 @@
                 container.innerHTML = `
                     <select id="sel_opt_${rowId}" onchange="updateAll()">
                         <option value="">(個人統計)</option>
-                        <option value="all">all (全聯盟摘要)</option>
+                        <option value="all">all (全聯盟)</option>
                     </select>
                 `;
                 break;
             case 'shield':
                 container.innerHTML = `
                     <select id="sel_opt_${rowId}" onchange="updateAll()">
-                        <option value="">(查詢郵件)</option>
+                        <option value="">(查詢)</option>
                         <option value="1">1 (完整狀態)</option>
-                        <option value="deploy">deploy (開啟護盾)</option>
+                        <option value="deploy">deploy (開護盾)</option>
                     </select>
                 `;
                 break;
             case 'adminbal':
                 container.innerHTML = `
                     <select id="sel_mode_${rowId}" onchange="updateAll()">
-                        <option value="bank">(持有的資源)</option>
-                        <option value="chat">chat (發至聯盟聊天)</option>
-                        <option value="player">指定全域目標玩家</option>
+                        <option value="bank">(銀行資源)</option>
+                        <option value="chat">chat (聊天室)</option>
+                        <option value="player">指定玩家</option>
                     </select>
                 `;
                 break;
@@ -923,7 +924,7 @@
                         <option value="ore">ore</option>
                         <option value="gold">gold</option>
                     </select>
-                    數量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:80px;" oninput="updateAll()">
+                    數量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:70px;" oninput="updateAll()">
                 `;
                 break;
             case 'setrsslimit':
@@ -935,7 +936,7 @@
                         <option value="wood">wood</option>
                         <option value="ore">ore</option>
                     </select>
-                    儲備量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:80px;" oninput="updateAll()">
+                    儲備: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:70px;" oninput="updateAll()">
                 `;
                 break;
             case 'findtile':
@@ -950,14 +951,14 @@
                         <option value="any">${t.types.any}</option>
                     </select>
                     等級: <select id="sel_lvl_${rowId}" onchange="updateAll()">
-                        <option value="">(所有等級)</option>
-                        <option value="1">Lvl 1</option>
-                        <option value="2">Lvl 2</option>
-                        <option value="3">Lvl 3</option>
-                        <option value="4" selected>Lvl 4</option>
-                        <option value="5">Lvl 5</option>
+                        <option value="">(所有)</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4" selected>4</option>
+                        <option value="5">5</option>
                     </select>
-                    頻道: <select id="sel_chat_${rowId}" onchange="updateAll()">
+                    <select id="sel_chat_${rowId}" onchange="updateAll()">
                         <option value="">mail</option>
                         <option value="chat">chat</option>
                     </select>
@@ -965,16 +966,16 @@
                 break;
             case 'findmonster':
                 container.innerHTML = `
-                    名稱: <input type="text" id="inp_m_${rowId}" value="hardrox" style="width:90px;" oninput="updateAll()">
+                    名稱: <input type="text" id="inp_m_${rowId}" value="hardrox" style="width:80px;" oninput="updateAll()">
                     等級: <select id="sel_lvl_${rowId}" onchange="updateAll()">
-                        <option value="">(所有等級)</option>
-                        <option value="1">Lvl 1</option>
-                        <option value="2" selected>Lvl 2</option>
-                        <option value="3">Lvl 3</option>
-                        <option value="4">Lvl 4</option>
-                        <option value="5">Lvl 5</option>
+                        <option value="">(所有)</option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                     </select>
-                    頻道: <select id="sel_chat_${rowId}" onchange="updateAll()">
+                    <select id="sel_chat_${rowId}" onchange="updateAll()">
                         <option value="">mail</option>
                         <option value="chat">chat</option>
                     </select>
@@ -983,14 +984,14 @@
             case 'findnest':
                 container.innerHTML = `
                     等級: <select id="sel_lvl_${rowId}" onchange="updateAll()">
-                        <option value="3" selected>Lvl 3</option>
-                        <option value="1">Lvl 1</option>
-                        <option value="2">Lvl 2</option>
-                        <option value="4">Lvl 4</option>
-                        <option value="5">Lvl 5</option>
+                        <option value="3" selected>3</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                         <option value="any">any</option>
                     </select>
-                    頻道: <select id="sel_chat_${rowId}" onchange="updateAll()">
+                    <select id="sel_chat_${rowId}" onchange="updateAll()">
                         <option value="">mail</option>
                         <option value="chat" selected>chat</option>
                     </select>
@@ -999,7 +1000,7 @@
             case 'whitelist':
                 container.innerHTML = `
                     階級: <select id="sel_rank_${rowId}" onchange="updateAll()">
-                        <option value="">(目前階級/查看)</option>
+                        <option value="">(查看)</option>
                         <option value="R4" selected>R4</option>
                         <option value="R3">R3</option>
                         <option value="R2">R2</option>
@@ -1019,17 +1020,17 @@
                 break;
             case 'ca':
                 container.innerHTML = `
-                    編號: <input type="text" id="inp_num_${rowId}" value="1" style="width:40px;" oninput="updateAll()">
-                    模式: <select id="sel_f_${rowId}" onchange="updateAll()">
+                    編號: <input type="text" id="inp_num_${rowId}" value="1" style="width:35px;" oninput="updateAll()">
+                    <select id="sel_f_${rowId}" onchange="updateAll()">
                         <option value="">標準</option>
-                        <option value="f">f (強制)</option>
+                        <option value="f">強制</option>
                     </select>
                 `;
                 break;
             case 'buildspam':
                 container.innerHTML = `
-                    次數: <input type="text" id="inp_amt_${rowId}" value="120" style="width:50px;" oninput="updateAll()">
-                    間隔(秒): <input type="text" id="inp_delay_${rowId}" value="7" style="width:40px;" oninput="updateAll()">
+                    次數: <input type="text" id="inp_amt_${rowId}" value="120" style="width:45px;" oninput="updateAll()">
+                    間隔: <input type="text" id="inp_delay_${rowId}" value="7" style="width:35px;" oninput="updateAll()">
                 `;
                 break;
             case 'setgather':
@@ -1037,27 +1038,27 @@
                     模式: <select id="sel_mode_${rowId}" onchange="updateAll()">
                         <option value="off">off</option>
                         <option value="on">on</option>
-                        <option value="ron">ron (領域開)</option>
-                        <option value="roff">roff (領域關)</option>
+                        <option value="ron">ron</option>
+                        <option value="roff">roff</option>
                     </select>
                 `;
                 break;
             case 'hunt':
                 container.innerHTML = `
-                    模式: <select id="sel_mode_${rowId}" onchange="updateAll()">
-                        <option value="coords">座標 (x y)</option>
+                    <select id="sel_mode_${rowId}" onchange="updateAll()">
+                        <option value="coords">座標</option>
                         <option value="off">off</option>
                         <option value="on">on</option>
                     </select>
-                    X: <input type="text" id="inp_x_${rowId}" value="150" style="width:45px;" oninput="updateAll()">
-                    Y: <input type="text" id="inp_y_${rowId}" value="166" style="width:45px;" oninput="updateAll()">
+                    X:<input type="text" id="inp_x_${rowId}" value="150" style="width:40px;" oninput="updateAll()">
+                    Y:<input type="text" id="inp_y_${rowId}" value="166" style="width:40px;" oninput="updateAll()">
                 `;
                 break;
             case 'opt_force':
                 container.innerHTML = `
                     <select id="sel_opt_${rowId}" onchange="updateAll()">
-                        <option value="">一般召回</option>
-                        <option value="force">force (強制召回)</option>
+                        <option value="">一般</option>
+                        <option value="force">強制</option>
                     </select>
                 `;
                 break;
@@ -1069,14 +1070,14 @@
                 break;
             case 'migrate':
                 container.innerHTML = `
-                    K: <input type="text" id="inp_k_${rowId}" value="60" style="width:40px;" oninput="updateAll()">
-                    X: <input type="text" id="inp_x_${rowId}" value="200" style="width:45px;" oninput="updateAll()">
-                    Y: <input type="text" id="inp_y_${rowId}" value="900" style="width:45px;" oninput="updateAll()">
+                    K:<input type="text" id="inp_k_${rowId}" value="60" style="width:35px;" oninput="updateAll()">
+                    X:<input type="text" id="inp_x_${rowId}" value="200" style="width:40px;" oninput="updateAll()">
+                    Y:<input type="text" id="inp_y_${rowId}" value="900" style="width:40px;" oninput="updateAll()">
                 `;
                 break;
             case 'text_input':
                 container.innerHTML = `
-                    參數/訊息: <input type="text" id="inp_text_${rowId}" value="${rowId==='reguser'?'423423958239':(rowId==='relocatekvk'?'60':'')}" style="width:120px;" oninput="updateAll()">
+                    參數: <input type="text" id="inp_text_${rowId}" value="${rowId==='reguser'?'423423958239':(rowId==='relocatekvk'?'60':'')}" style="width:100px;" oninput="updateAll()">
                 `;
                 break;
         }
@@ -1084,7 +1085,7 @@
 
     function updateAll() {
         const p = getPrefix();
-        const player = getFormattedPlayer(); // 一律取用全域目標玩家名稱
+        const player = getFormattedPlayer();
 
         commandsData.forEach((item) => {
             const rowId = item.id;
@@ -1235,7 +1236,7 @@
             }
             else if(item.id === 'migrate') {
                 let k = document.getElementById(`inp_k_${rowId}`)?.value || '60';
-                let x = document.getElementById(`inp_x_${rowId}`)?.value || '200';
+                let x = document.getElementById(`inp_x_${rowId}` )?.value || '200';
                 let y = document.getElementById(`inp_y_${rowId}`)?.value || '900';
                 result = `${p}migrate ${k} ${x} ${y}`;
             }
