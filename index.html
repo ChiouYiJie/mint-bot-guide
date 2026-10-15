@@ -1,0 +1,1300 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint Bot - 聯盟銀行指令指南</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --badge-member: #0284c7;
+            --badge-r4: #d97706;
+            --badge-auth: #dc2626;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, 
+                        "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微軟正黑體", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* 頂部固定區域 (Header + Config Panel) */
+        .sticky-top-panel {
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            z-index: 1000;
+            padding-top: 8px;
+            padding-bottom: 12px;
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--border-color);
+            margin-left: -24px;
+            margin-right: -24px;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lang-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .lang-select {
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .config-card {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 16px 18px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .config-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group select {
+            padding: 9px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            background: white;
+            font-family: inherit;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .player-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .preset-select {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 28px 0 14px 0;
+            color: var(--text-main);
+            border-left: 5px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        .cmd-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .cmd-table th, .cmd-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .cmd-table th {
+            background-color: var(--code-bg);
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .badge-member { background-color: var(--badge-member); }
+        .badge-r4 { background-color: var(--badge-r4); }
+        .badge-auth { background-color: var(--badge-auth); }
+
+        .ctrl-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .ctrl-box select, .ctrl-box input {
+            padding: 5px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            background: #ffffff;
+            font-family: inherit;
+        }
+
+        .cmd-code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            background-color: var(--code-bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #0f172a;
+            display: inline-block;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .btn-copy:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-copy.copied {
+            background-color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .cmd-table, .cmd-table tbody, .cmd-table tr, .cmd-table td {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .cmd-table thead { display: none; }
+            .cmd-table tr {
+                margin-bottom: 12px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 8px;
+            }
+            .cmd-table td {
+                border-bottom: none;
+                padding: 6px 8px;
+            }
+            .cmd-table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                display: block;
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                margin-bottom: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 頂部固定區塊 -->
+    <div class="sticky-top-panel">
+        <header>
+            <h1 id="ui-title">Mint Bot 聯盟銀行指令指南</h1>
+            <div class="lang-container">
+                <span>🌐</span>
+                <select id="langSelect" class="lang-select" onchange="changeLanguage()">
+                    <option value="zh-TW" selected>繁體中文</option>
+                    <option value="zh-CN">简体中文</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </header>
+
+        <div class="config-card">
+            <!-- 指令前綴 -->
+            <div class="input-group">
+                <label id="lbl-prefix">指令前綴 (Prefix)</label>
+                <input type="text" id="botPrefix" value="!" oninput="updateAll()">
+            </div>
+
+            <!-- 目標玩家名稱與常用名單 -->
+            <div class="input-group">
+                <label id="lbl-player">目標玩家名稱 (空白自動轉底線)</label>
+                <div class="player-row">
+                    <input type="text" id="playerName" value="CN ADP" oninput="updateAll()">
+                    <select id="presetPlayers" class="preset-select" onchange="selectPresetPlayer()">
+                        <option value="" disabled selected>⭐ 常用名單</option>
+                        <option value="CN ADP">CN ADP</option>
+                        <option value="Amlmeng">Amlmeng</option>
+                        <option value="Dreamer Jame">Dreamer Jame</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 快速搜尋 (跨滿版兩欄) -->
+            <div class="input-group full-width">
+                <label id="lbl-search">🔍 快速搜尋指令/說明</label>
+                <input type="text" id="searchKeyword" placeholder="輸入關鍵字篩選..." oninput="filterCommands()">
+            </div>
+        </div>
+    </div>
+
+    <!-- 內容區域 -->
+    <div id="content-area"></div>
+</div>
+
+<script>
+    const i18n = {
+        'zh-TW': {
+            title: 'Mint Bot 聯盟銀行指令指南',
+            lblPrefix: '指令前綴 (Prefix)',
+            lblPlayer: '目標玩家名稱 (空白自動轉底線)',
+            lblSearch: '🔍 快速搜尋指令/說明',
+            searchPlaceholder: '輸入關鍵字篩選...',
+            thCmd: '指令',
+            thRank: '最低階級',
+            thDesc: '說明與自訂參數生成',
+            thAction: '操作',
+            copy: '複製範例',
+            copied: '已複製！',
+            ranks: { member: '成員 (R1+)', r4: 'R4+', auth: '授權使用者' },
+            types: { food: '糧食 (food)', stone: '石料 (stone)', wood: '木材 (wood)', ore: '礦石 (ore)', gold: '金幣 (gold)', gems: '水晶 (gems)', any: '任意 (any)' },
+            sections: {
+                balance: '你的餘額',
+                claim: '索取資源',
+                info: '銀行資訊與統計',
+                admin: '管理銀行的資源',
+                find: '尋找資源田和魔物',
+                guild: '聯盟管理',
+                control: '操控銀行',
+                move: '移動銀行',
+                link: '連結 Discord 或 Telegram'
+            },
+            desc: {
+                bal: '用郵件寄給你目前的餘額。',
+                transfer: '把你的餘額轉給另一位玩家。',
+                setacc: '從現在起，你送到銀行的所有資源都記到另一位玩家名下。',
+                food: '從你的餘額中寄糧食給你。用 all 可以領取全部糧食餘額。',
+                stone: '從你的餘額中寄石料給你。用 all 可以領取全部石料餘額。',
+                wood: '從你的餘額中寄木材給你。用 all 可以領取全部木材餘額。',
+                ore: '從你的餘額中寄礦石給你。用 all 可以領取全部礦石餘額。',
+                gold: '從你的餘額中寄金幣給你。用 all 可以領取全部金幣餘額。',
+                rss: '一次寄給你多種資源 (順序: 糧、石、木、礦、金)。',
+                donatefood: '從你的餘額中把糧食送給另一位玩家。',
+                donatestone: '從你的餘額中把石料送給另一位玩家。',
+                donatewood: '從你的餘額中把木材送給另一位玩家。',
+                donateore: '從你的餘額中把礦石送給另一位玩家。',
+                donategold: '從你的餘額中把金幣送給另一位玩家。',
+                pos: '用郵件寄給你銀行的位置。加上 chat 則發在聯盟聊天中。',
+                quest: '用郵件寄給你銀行的聯盟總動員狀態。',
+                stats: '用郵件寄給你自上次重設以來的禮物統計。',
+                shield: '查詢銀行的護盾何時結束，或開啟護盾。',
+                pstats: '用郵件寄給你某位玩家的禮物統計。',
+                ess: '用郵件寄給你銀行的黑暗元素詳情。',
+                resetstats: '重設目前週期的禮物統計。',
+                busrank: '把達到狩獵或購買目標的 R1 成員升為 R2。',
+                adminbal: '不指定玩家時寄銀行資源；指定玩家時寄該玩家餘額。',
+                adminbag: '用郵件寄給你銀行背包中的資源。',
+                adminfood: '從銀行寄糧食給玩家，不使用餘額。',
+                adminstone: '從銀行寄石料給玩家，不使用餘額。',
+                adminwood: '從銀行寄木材給玩家，不使用餘額。',
+                adminore: '從銀行寄礦石給玩家，不使用餘額。',
+                admingold: '從銀行寄金幣給玩家，不使用餘額。',
+                adminrss: '從銀行寄多種資源給玩家 (糧 石 木 礦 金 玩家)。',
+                abort: '取消所有排隊中的資源運輸並退回。',
+                setbal: '把玩家某種資源的餘額設為該數量。',
+                setrsslimit: '保留一定的儲備數量，低於此數量則不寄出。',
+                findtile: '在銀行附近尋找指定資源田與等級。',
+                findtilelocal: '在你城堡附近尋找指定資源田與等級。',
+                findmonster: '依名稱尋找指定魔物與等級。',
+                findmonsterlocal: '在你城堡附近尋找指定魔物與等級。',
+                findnest: '尋找指定等級的黑暗巢穴。',
+                findnestlocal: '在你城堡附近尋找指定等級的黑暗巢穴。',
+                whitelist: '以指定階級把玩家加入銀行的白名單（不指定則查看白名單）。',
+                blacklist: '拒絕入盟或踢出聯盟並加入黑名單。',
+                unlistwhite: '把玩家從白名單中移除。',
+                unlistblack: '把玩家從黑名單中移除。',
+                addtitle: '授予王國稱號（空格用底線代替）。',
+                deltitle: '從持有該稱號的人身上移除它。',
+                yell: '在聯盟聊天中發布一則訊息。',
+                purge: '發送空白行，把舊訊息推出聯盟聊天畫面。',
+                guild: '退出目前聯盟並加入指定縮寫的聯盟。',
+                clearboard: '刪除聯盟總動員任務板上的所有任務。',
+                joingvg: '加入聯盟遠征。',
+                leavegvg: '退出聯盟遠征。',
+                joinda: '替聯盟加入龍火戰場。',
+                leaveda: '替聯盟退出龍火戰場。',
+                joinca: '加入指定編號的無界戰場（+ f 強制加入）。',
+                leaveca: '離開無界戰場並回到原本的王國。',
+                members: '重新載入銀行的聯盟成員名單。',
+                buildspam: '建造、請求幫助後取消以賺取聯盟幣。',
+                setgather: '開啟或關閉銀行的採集功能。',
+                gryphon: '使用格里芬 (Gryphon) 寵物技能。',
+                snowbeast: '使用大腳 (Snowbeast) 寵物技能。',
+                hunt: '狩獵指定位置魔物，或開啟/關閉狩獵。',
+                recall: '召回銀行的部隊。',
+                camp: '派一支只有一個士兵的部隊到該位置駐紮。',
+                campleader: '派一支帶領主的部隊到該位置駐紮。',
+                payransom: '如果銀行的領主被俘虜，就支付贖金。',
+                stop: '讓銀行離線指定的秒數。',
+                reloadacc: '重新啟動銀行帳號。',
+                relocateCoords: '把銀行傳送到目前王國的該位置。',
+                relocateRand: '把銀行隨機傳送到目前王國的隨機位置。',
+                relocatekvk: '把銀行傳送到 KvK 王國中的隨機位置。',
+                migrate: '把銀行遷移到該王國的該位置。',
+                reguser: '連結你的 Discord 或 Telegram 帳號。',
+                unreguser: '取消 Discord 或 Telegram 帳號連結。'
+            }
+        },
+        'zh-CN': {
+            title: 'Mint Bot 联盟银行指令指南',
+            lblPrefix: '指令前缀 (Prefix)',
+            lblPlayer: '目标玩家名称 (空格自动转下划线)',
+            lblSearch: '🔍 快速搜索指令/说明',
+            searchPlaceholder: '输入关键字筛选...',
+            thCmd: '指令',
+            thRank: '最低阶级',
+            thDesc: '说明与自订参数生成',
+            thAction: '操作',
+            copy: '复制示例',
+            copied: '已复制！',
+            ranks: { member: '成员 (R1+)', r4: 'R4+', auth: '授权使用者' },
+            types: { food: '粮 (food)', stone: '石 (stone)', wood: '木 (wood)', ore: '矿 (ore)', gold: '金 (gold)', gems: '水晶 (gems)', any: '任意 (any)' },
+            sections: {
+                balance: '你的余额',
+                claim: '索取资源',
+                info: '银行信息与统计',
+                admin: '管理银行的资源',
+                find: '寻找资源田和魔物',
+                guild: '联盟管理',
+                control: '操控银行',
+                move: '移动银行',
+                link: '链接 Discord 或 Telegram'
+            },
+            desc: {
+                bal: '用邮件寄给你目前的余额。',
+                transfer: '把你的余额转给另一位玩家。',
+                setacc: '从现在起，你送到银行的所有资源都记到另一位玩家名下。',
+                food: '从你的余额中寄粮食给你。用 all 可以领取全部粮食余额。',
+                stone: '从你的余额中寄石料给你。用 all 可以领取全部石料余额。',
+                wood: '从你的余额中寄木材给你。用 all 可以领取全部木材余额。',
+                ore: '从你的余额中寄矿石给你。用 all 可以领取全部矿石余额。',
+                gold: '从你的余额中寄金币给你。用 all 可以领取全部金币余额。',
+                rss: '一次寄给你多种资源 (顺序: 粮、石、木、矿、金)。',
+                donatefood: '从你的余额中把粮食送给另一位玩家。',
+                donatestone: '从你的余额中把石料送给另一位玩家。',
+                donatewood: '从你的余额中把木材送给另一位玩家。',
+                donateore: '从你的余额中把矿石送给另一位玩家。',
+                donategold: '从你的余额中把金币送给另一位玩家。',
+                pos: '用邮件寄给你银行的位置。加上 chat 则发在联盟聊天中。',
+                quest: '用邮件寄给你银行的联盟总动员状态。',
+                stats: '用邮件寄给你自上次重设以来的礼物统计。',
+                shield: '查询银行的护盾何时结束，或开启护盾。',
+                pstats: '用邮件寄给你某位玩家的礼物统计。',
+                ess: '用邮件寄给你银行的黑暗元素详情。',
+                resetstats: '重设目前周期的礼物统计。',
+                busrank: '把达到狩猎或购买目标的 R1 成员升为 R2。',
+                adminbal: '不指定玩家时寄银行资源；指定玩家时寄该玩家余额。',
+                adminbag: '用邮件寄给你银行背包中的资源。',
+                adminfood: '从银行寄粮食给玩家，不使用余额。',
+                adminstone: '从银行寄石料给玩家，不使用余额。',
+                adminwood: '从银行寄木材给玩家，不使用余额。',
+                adminore: '从银行寄矿石给玩家，不使用余额。',
+                admingold: '从银行寄金币给玩家，不使用余额。',
+                adminrss: '从银行寄多种资源给玩家 (粮 石 木 矿 金 玩家)。',
+                abort: '取消所有排队中的资源运输并退回。',
+                setbal: '把玩家某种资源的余额设为该数量。',
+                setrsslimit: '保留一定的储备数量，低于此数量则不寄出。',
+                findtile: '在银行附近寻找指定资源田与等级。',
+                findtilelocal: '在你城堡附近寻找指定资源田与等级。',
+                findmonster: '依名称寻找指定魔物与等级。',
+                findmonsterlocal: '在你城堡附近寻找指定魔物与等级。',
+                findnest: '寻找指定等级的黑暗巢穴。',
+                findnestlocal: '在你城堡附近寻找指定等级的黑暗巢穴。',
+                whitelist: '以指定阶级把玩家加入银行的白名单（不指定则查看白名单）。',
+                blacklist: '拒绝入盟或踢出联盟并加入黑名单。',
+                unlistwhite: '把玩家从白名单中移除。',
+                unlistblack: '把玩家从黑名单中移除。',
+                addtitle: '授予王国称号（空格用下划线代替）。',
+                deltitle: '从持有该称号的人身上移除它。',
+                yell: '在联盟聊天中发布一条消息。',
+                purge: '发送空白行，把旧消息推出联盟聊天画面。',
+                guild: '退出目前联盟并加入指定缩写的联盟。',
+                clearboard: '删除联盟总动员任务板上的所有任务。',
+                joingvg: '加入联盟远征。',
+                leavegvg: '退出联盟远征。',
+                joinda: '替联盟加入龙火战场。',
+                leaveda: '替联盟退出龙火战场。',
+                joinca: '加入指定编号的无界战场（+ f 强制加入）。',
+                leaveca: '离开无界战场并回到原本的王国。',
+                members: '重新加载银行的联盟成员名单。',
+                buildspam: '建造、请求帮助后取消以赚取联盟币。',
+                setgather: '开启或关闭银行的采集功能。',
+                gryphon: '使用格里芬 (Gryphon) 宠物技能。',
+                snowbeast: '使用大脚 (Snowbeast) 宠物技能。',
+                hunt: '狩猎指定位置魔物，或开启/关闭狩猎。',
+                recall: '召回银行的部队。',
+                camp: '派一支只有一个士兵的部队到该位置驻扎。',
+                campleader: '派一支带领主的部队到该位置驻扎。',
+                payransom: '如果银行的领主被俘虏，就支付赎金。',
+                stop: '让银行离线指定的秒数。',
+                reloadacc: '重新启动银行账号。',
+                relocateCoords: '把银行传送到目前王国的该位置。',
+                relocateRand: '把银行随机传送到目前王国的随机位置。',
+                relocatekvk: '把银行传送到 KvK 王国中的随机位置。',
+                migrate: '把银行迁移到该王国的该位置。',
+                reguser: '链接你的 Discord 或 Telegram 账号。',
+                unreguser: '取消 Discord 或 Telegram 账号链接。'
+            }
+        },
+        'en': {
+            title: 'Mint Bot Guild Bank Command Guide',
+            lblPrefix: 'Command Prefix',
+            lblPlayer: 'Target Player Name (Spaces to _)',
+            lblSearch: '🔍 Search Commands',
+            searchPlaceholder: 'Type keyword to filter...',
+            thCmd: 'Command',
+            thRank: 'Min Rank',
+            thDesc: 'Description & Custom Controls',
+            thAction: 'Action',
+            copy: 'Copy',
+            copied: 'Copied!',
+            ranks: { member: 'Member (R1+)', r4: 'R4+', auth: 'Authorized' },
+            types: { food: 'food', stone: 'stone', wood: 'wood', ore: 'ore', gold: 'gold', gems: 'gems', any: 'any' },
+            sections: {
+                balance: 'Your Balance',
+                claim: 'Claim Resources',
+                info: 'Bank Info & Stats',
+                admin: 'Manage Bank Resources',
+                find: 'Find Tiles & Monsters',
+                guild: 'Guild Management',
+                control: 'Control Bank',
+                move: 'Move Bank',
+                link: 'Link Discord or Telegram'
+            },
+            desc: {
+                bal: 'Sends your current balance via mail.',
+                transfer: 'Transfers your balance to another player.',
+                setacc: 'Credits all your sent resources to another player.',
+                food: 'Sends food from your balance to you.',
+                stone: 'Sends stone from your balance to you.',
+                wood: 'Sends wood from your balance to you.',
+                ore: 'Sends ore from your balance to you.',
+                gold: 'Sends gold from your balance to you.',
+                rss: 'Claims multiple resources at once.',
+                donatefood: 'Donates food from your balance to another player.',
+                donatestone: 'Donates stone from your balance to another player.',
+                donatewood: 'Donates wood from your balance to another player.',
+                donateore: 'Donates ore from your balance to another player.',
+                donategold: 'Donates gold from your balance to another player.',
+                pos: 'Sends bank position via mail or chat.',
+                quest: 'Sends guild mobilization status.',
+                stats: 'Sends gift statistics.',
+                shield: 'Checks or deploys bank shield.',
+                pstats: 'Sends gift statistics for a specific player.',
+                ess: 'Sends dark essence details.',
+                resetstats: 'Resets gift statistics cycle.',
+                busrank: 'Promotes qualified R1 members to R2.',
+                adminbal: 'Sends bank resources or player balance.',
+                adminbag: 'Sends items in bank bag.',
+                adminfood: 'Sends food directly from bank.',
+                adminstone: 'Sends stone directly from bank.',
+                adminwood: 'Sends wood directly from bank.',
+                adminore: 'Sends ore directly from bank.',
+                admingold: 'Sends gold directly from bank.',
+                adminrss: 'Sends multiple resources directly from bank.',
+                abort: 'Cancels all queued shipments.',
+                setbal: 'Sets player balance directly.',
+                setrsslimit: 'Sets reserve limit to protect bank inventory.',
+                findtile: 'Finds resource tiles near bank.',
+                findtilelocal: 'Finds resource tiles near your castle.',
+                findmonster: 'Finds monsters by name and level.',
+                findmonsterlocal: 'Finds monsters near your castle.',
+                findnest: 'Finds dark nests.',
+                findnestlocal: 'Finds dark nests near your castle.',
+                whitelist: 'Adds or views whitelist.',
+                blacklist: 'Adds player to blacklist and kicks.',
+                unlistwhite: 'Removes player from whitelist.',
+                unlistblack: 'Removes player from blacklist.',
+                addtitle: 'Grants kingdom title.',
+                deltitle: 'Removes kingdom title.',
+                yell: 'Sends message to guild chat.',
+                purge: 'Clears guild chat screen.',
+                guild: 'Changes guild affiliation.',
+                clearboard: 'Clears mobilization board.',
+                joingvg: 'Joins Guild Expedition.',
+                leavegvg: 'Leaves Guild Expedition.',
+                joinda: 'Joins Dragon Arena.',
+                leaveda: 'Leaves Dragon Arena.',
+                joinca: 'Joins Chaos Arena.',
+                leaveca: 'Leaves Chaos Arena.',
+                members: 'Reloads guild member list.',
+                buildspam: 'Builds and cancels to farm guild coins.',
+                setgather: 'Enables or disables gathering.',
+                gryphon: 'Uses Gryphon skill.',
+                snowbeast: 'Uses Snowbeast skill.',
+                hunt: 'Hunts monster at coordinates or toggles hunting.',
+                recall: 'Recalls bank troops.',
+                camp: 'Camps single troop at coordinates.',
+                campleader: 'Camps lord troop at coordinates.',
+                payransom: 'Pays ransom if lord is captured.',
+                stop: 'Stops bank offline for seconds.',
+                reloadacc: 'Restarts bank account.',
+                relocateCoords: 'Relocates bank to specific coordinates.',
+                relocateRand: 'Relocates bank to random position.',
+                relocatekvk: 'Relocates to random KvK kingdom position.',
+                migrate: 'Migrates bank to kingdom and coordinates.',
+                reguser: 'Links Discord or Telegram account.',
+                unreguser: 'Unlinks account.'
+            }
+        }
+    };
+
+    const commandsData = [
+        // 你的餘額
+        { sec: 'balance', id: 'bal', cmd: '!bal', rank: 'member', descKey: 'bal' },
+        { sec: 'balance', id: 'transfer', cmd: '!transfer', rank: 'member', descKey: 'transfer', ctrlType: 'transfer' },
+        { sec: 'balance', id: 'setacc', cmd: '!setacc', rank: 'r4', descKey: 'setacc' },
+
+        // 索取資源
+        { sec: 'claim', id: 'food', cmd: '!food', rank: 'member', descKey: 'food', ctrlType: 'amt_input' },
+        { sec: 'claim', id: 'stone', cmd: '!stone', rank: 'member', descKey: 'stone', ctrlType: 'amt_input' },
+        { sec: 'claim', id: 'wood', cmd: '!wood', rank: 'member', descKey: 'wood', ctrlType: 'amt_input' },
+        { sec: 'claim', id: 'ore', cmd: '!ore', rank: 'member', descKey: 'ore', ctrlType: 'amt_input' },
+        { sec: 'claim', id: 'gold', cmd: '!gold', rank: 'member', descKey: 'gold', ctrlType: 'amt_input' },
+        { sec: 'claim', id: 'rss', cmd: '!rss', rank: 'member', descKey: 'rss', ctrlType: 'rss_multi' },
+        { sec: 'claim', id: 'donatefood', cmd: '!donatefood', rank: 'member', descKey: 'donatefood', ctrlType: 'donate_single' },
+        { sec: 'claim', id: 'donatestone', cmd: '!donatestone', rank: 'member', descKey: 'donatestone', ctrlType: 'donate_single' },
+        { sec: 'claim', id: 'donatewood', cmd: '!donatewood', rank: 'member', descKey: 'donatewood', ctrlType: 'donate_single' },
+        { sec: 'claim', id: 'donateore', cmd: '!donateore', rank: 'member', descKey: 'donateore', ctrlType: 'donate_single' },
+        { sec: 'claim', id: 'donategold', cmd: '!donategold', rank: 'member', descKey: 'donategold', ctrlType: 'donate_single' },
+
+        // 銀行資訊與統計
+        { sec: 'info', id: 'pos', cmd: '!pos', rank: 'member', descKey: 'pos', ctrlType: 'opt_chat' },
+        { sec: 'info', id: 'quest', cmd: '!quest', rank: 'member', descKey: 'quest', ctrlType: 'opt_chat' },
+        { sec: 'info', id: 'stats', cmd: '!stats', rank: 'member', descKey: 'stats', ctrlType: 'opt_all' },
+        { sec: 'info', id: 'shield', cmd: '!shield', rank: 'r4', descKey: 'shield', ctrlType: 'shield' },
+        { sec: 'info', id: 'pstats', cmd: '!pstats', rank: 'r4', descKey: 'pstats' },
+        { sec: 'info', id: 'ess', cmd: '!ess', rank: 'auth', descKey: 'ess' },
+        { sec: 'info', id: 'resetstats', cmd: '!resetstats', rank: 'auth', descKey: 'resetstats' },
+        { sec: 'info', id: 'busrank', cmd: '!busrank', rank: 'auth', descKey: 'busrank' },
+
+        // 管理銀行的資源
+        { sec: 'admin', id: 'adminbal', cmd: '!adminbal', rank: 'r4', descKey: 'adminbal', ctrlType: 'adminbal' },
+        { sec: 'admin', id: 'adminbag', cmd: '!adminbag', rank: 'r4', descKey: 'adminbag' },
+        { sec: 'admin', id: 'adminfood', cmd: '!adminfood', rank: 'r4', descKey: 'adminfood', ctrlType: 'admin_single' },
+        { sec: 'admin', id: 'adminstone', cmd: '!adminstone', rank: 'r4', descKey: 'adminstone', ctrlType: 'admin_single' },
+        { sec: 'admin', id: 'adminwood', cmd: '!adminwood', rank: 'r4', descKey: 'adminwood', ctrlType: 'admin_single' },
+        { sec: 'admin', id: 'adminore', cmd: '!adminore', rank: 'r4', descKey: 'adminore', ctrlType: 'admin_single' },
+        { sec: 'admin', id: 'admingold', cmd: '!admingold', rank: 'r4', descKey: 'admingold', ctrlType: 'admin_single' },
+        { sec: 'admin', id: 'adminrss', cmd: '!adminrss', rank: 'r4', descKey: 'adminrss', ctrlType: 'admin_rss' },
+        { sec: 'admin', id: 'abort', cmd: '!abort', rank: 'r4', descKey: 'abort' },
+        { sec: 'admin', id: 'setbal', cmd: '!setbal', rank: 'auth', descKey: 'setbal', ctrlType: 'setbal' },
+        { sec: 'admin', id: 'setrsslimit', cmd: '!setrsslimit', rank: 'auth', descKey: 'setrsslimit', ctrlType: 'setrsslimit' },
+
+        // 尋找資源田和魔物
+        { sec: 'find', id: 'findtile', cmd: '!findtile', rank: 'auth', descKey: 'findtile', ctrlType: 'findtile' },
+        { sec: 'find', id: 'findtilelocal', cmd: '!findtilelocal', rank: 'auth', descKey: 'findtilelocal', ctrlType: 'findtile' },
+        { sec: 'find', id: 'findmonster', cmd: '!findmonster', rank: 'auth', descKey: 'findmonster', ctrlType: 'findmonster' },
+        { sec: 'find', id: 'findmonsterlocal', cmd: '!findmonsterlocal', rank: 'auth', descKey: 'findmonsterlocal', ctrlType: 'findmonster' },
+        { sec: 'find', id: 'findnest', cmd: '!findnest', rank: 'auth', descKey: 'findnest', ctrlType: 'findnest' },
+        { sec: 'find', id: 'findnestlocal', cmd: '!findnestlocal', rank: 'auth', descKey: 'findnestlocal', ctrlType: 'findnest' },
+
+        // 聯盟管理
+        { sec: 'guild', id: 'whitelist', cmd: '!whitelist', rank: 'r4', descKey: 'whitelist', ctrlType: 'whitelist' },
+        { sec: 'guild', id: 'blacklist', cmd: '!blacklist', rank: 'r4', descKey: 'blacklist', ctrlType: 'blacklist' },
+        { sec: 'guild', id: 'unlistwhite', cmd: '!unlistwhite', rank: 'r4', descKey: 'unlistwhite' },
+        { sec: 'guild', id: 'unlistblack', cmd: '!unlistblack', rank: 'r4', descKey: 'unlistblack' },
+        { sec: 'guild', id: 'addtitle', cmd: '!addtitle', rank: 'r4', descKey: 'addtitle', ctrlType: 'addtitle' },
+        { sec: 'guild', id: 'deltitle', cmd: '!deltitle', rank: 'r4', descKey: 'deltitle', ctrlType: 'text_input' },
+        { sec: 'guild', id: 'yell', cmd: '!yell', rank: 'r4', descKey: 'yell', ctrlType: 'text_input' },
+        { sec: 'guild', id: 'purge', cmd: '!purge', rank: 'r4', descKey: 'purge' },
+        { sec: 'guild', id: 'guild', cmd: '!guild', rank: 'auth', descKey: 'guild', ctrlType: 'text_input' },
+        { sec: 'guild', id: 'clearboard', cmd: '!clearboard', rank: 'auth', descKey: 'clearboard' },
+        { sec: 'guild', id: 'joingvg', cmd: '!joingvg', rank: 'auth', descKey: 'joingvg' },
+        { sec: 'guild', id: 'leavegvg', cmd: '!leavegvg', rank: 'auth', descKey: 'leavegvg' },
+        { sec: 'guild', id: 'joinda', cmd: '!joinda', rank: 'auth', descKey: 'joinda' },
+        { sec: 'guild', id: 'leaveda', cmd: '!leaveda', rank: 'auth', descKey: 'leaveda' },
+        { sec: 'guild', id: 'joinca', cmd: '!joinca', rank: 'auth', descKey: 'joinca', ctrlType: 'ca' },
+        { sec: 'guild', id: 'leaveca', cmd: '!leaveca', rank: 'auth', descKey: 'leaveca' },
+        { sec: 'guild', id: 'members', cmd: '!members', rank: 'auth', descKey: 'members' },
+
+        // 操控銀行
+        { sec: 'control', id: 'buildspam', cmd: '!buildspam', rank: 'r4', descKey: 'buildspam', ctrlType: 'buildspam' },
+        { sec: 'control', id: 'setgather', cmd: '!setgather', rank: 'r4', descKey: 'setgather', ctrlType: 'setgather' },
+        { sec: 'control', id: 'gryphon', cmd: '!gryphon', rank: 'r4', descKey: 'gryphon' },
+        { sec: 'control', id: 'snowbeast', cmd: '!snowbeast', rank: 'r4', descKey: 'snowbeast' },
+        { sec: 'control', id: 'hunt', cmd: '!hunt', rank: 'auth', descKey: 'hunt', ctrlType: 'hunt' },
+        { sec: 'control', id: 'recall', cmd: '!recall', rank: 'auth', descKey: 'recall', ctrlType: 'opt_force' },
+        { sec: 'control', id: 'camp', cmd: '!camp', rank: 'auth', descKey: 'camp', ctrlType: 'coords' },
+        { sec: 'control', id: 'campleader', cmd: '!campleader', rank: 'auth', descKey: 'campleader', ctrlType: 'coords' },
+        { sec: 'control', id: 'payransom', cmd: '!payransom', rank: 'auth', descKey: 'payransom' },
+        { sec: 'control', id: 'stop', cmd: '!stop', rank: 'auth', descKey: 'stop', ctrlType: 'text_input' },
+        { sec: 'control', id: 'reloadacc', cmd: '!reloadacc', rank: 'auth', descKey: 'reloadacc' },
+
+        // 移動銀行
+        { sec: 'move', id: 'relocateCoords', cmd: '!relocate x y', rank: 'auth', descKey: 'relocateCoords', ctrlType: 'coords' },
+        { sec: 'move', id: 'relocateRand', cmd: '!relocate rand', rank: 'auth', descKey: 'relocateRand' },
+        { sec: 'move', id: 'relocatekvk', cmd: '!relocatekvk', rank: 'auth', descKey: 'relocatekvk', ctrlType: 'text_input' },
+        { sec: 'move', id: 'migrate', cmd: '!migrate', rank: 'auth', descKey: 'migrate', ctrlType: 'migrate' },
+
+        // 連結帳號
+        { sec: 'link', id: 'reguser', cmd: '!reguser', rank: 'member', descKey: 'reguser', ctrlType: 'text_input' },
+        { sec: 'link', id: 'unreguser', cmd: '!unreguser', rank: 'member', descKey: 'unreguser' }
+    ];
+
+    function getFormattedPlayer() {
+        let p = document.getElementById('playerName').value.trim();
+        return p ? p.replace(/\s+/g, '_') : 'Player_1';
+    }
+
+    function selectPresetPlayer() {
+        const select = document.getElementById('presetPlayers');
+        const val = select.value;
+        if(val) {
+            document.getElementById('playerName').value = val;
+            updateAll();
+        }
+        select.selectedIndex = 0; // 重置選單狀態
+    }
+
+    function getPrefix() {
+        return document.getElementById('botPrefix').value.trim() || '!';
+    }
+
+    function renderPage() {
+        const lang = document.getElementById('langSelect').value;
+        const t = i18n[lang];
+
+        document.documentElement.lang = lang;
+        document.getElementById('ui-title').innerText = t.title;
+        document.getElementById('lbl-prefix').innerText = t.lblPrefix;
+        document.getElementById('lbl-player').innerText = t.lblPlayer;
+        document.getElementById('lbl-search').innerText = t.lblSearch;
+        document.getElementById('searchKeyword').placeholder = t.searchPlaceholder;
+
+        const contentArea = document.getElementById('content-area');
+        contentArea.innerHTML = '';
+
+        const sections = ['balance', 'claim', 'info', 'admin', 'find', 'guild', 'control', 'move', 'link'];
+
+        sections.forEach(secKey => {
+            const secContainer = document.createElement('div');
+            secContainer.className = `section-block sec-${secKey}`;
+
+            const secTitle = document.createElement('div');
+            secTitle.className = 'section-title';
+            secTitle.innerText = t.sections[secKey];
+            secContainer.appendChild(secTitle);
+
+            const table = document.createElement('table');
+            table.className = 'cmd-table';
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th style="width:20%;">${t.thCmd}</th>
+                        <th>${t.thDesc}</th>
+                        <th style="width:15%;">${t.thAction}</th>
+                        <th style="width:15%;">${t.thRank}</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-${secKey}"></tbody>
+            `;
+            secContainer.appendChild(table);
+            contentArea.appendChild(secContainer);
+
+            const tbody = table.querySelector('tbody');
+            const secCmds = commandsData.filter(x => x.sec === secKey);
+
+            secCmds.forEach((item) => {
+                const tr = document.createElement('tr');
+                tr.className = 'cmd-row';
+                tr.setAttribute('data-cmd', item.cmd.toLowerCase());
+                tr.setAttribute('data-desc', (t.desc[item.descKey] || '').toLowerCase());
+                const rowId = item.id;
+
+                let badgeClass = 'badge-member';
+                if(item.rank === 'r4') badgeClass = 'badge-r4';
+                if(item.rank === 'auth') badgeClass = 'badge-auth';
+
+                tr.innerHTML = `
+                    <td data-label="${t.thCmd}">
+                        <strong style="color:var(--primary); font-size:1rem;" id="name_${rowId}">${item.cmd}</strong>
+                    </td>
+                    <td data-label="${t.thDesc}">
+                        <div>${t.desc[item.descKey] || ''}</div>
+                        <div class="ctrl-box" id="ctrl_${rowId}"></div>
+                        <div style="margin-top:6px;">
+                            範例: <span class="cmd-code" id="code_${rowId}"></span>
+                        </div>
+                    </td>
+                    <td data-label="${t.thAction}">
+                        <button class="btn-copy" onclick="copyCode('code_${rowId}', this)">${t.copy}</button>
+                    </td>
+                    <td data-label="${t.thRank}">
+                        <span class="badge ${badgeClass}">${t.ranks[item.rank]}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+                buildControls(item.ctrlType, `ctrl_${rowId}`, rowId, t);
+            });
+        });
+
+        updateAll();
+        filterCommands();
+    }
+
+    function buildControls(type, containerId, rowId, t) {
+        const container = document.getElementById(containerId);
+        if(!container) return;
+
+        switch(type) {
+            case 'transfer':
+                container.innerHTML = `
+                    類型: <select id="sel_rss_${rowId}" onchange="updateAll()">
+                        <option value="">(所有資源)</option>
+                        <option value="food">${t.types.food}</option>
+                        <option value="stone">${t.types.stone}</option>
+                        <option value="wood">${t.types.wood}</option>
+                        <option value="ore">${t.types.ore}</option>
+                        <option value="gold">${t.types.gold}</option>
+                    </select>
+                    數量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'amt_input':
+                container.innerHTML = `
+                    數量/all: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'donate_single':
+                container.innerHTML = `
+                    數量: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'admin_single':
+                container.innerHTML = `
+                    數量: <input type="text" id="inp_amt_${rowId}" value="5M" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'rss_multi':
+            case 'admin_rss':
+                container.innerHTML = `
+                    糧:<input type="text" id="r_f_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
+                    石:<input type="text" id="r_s_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
+                    木:<input type="text" id="r_w_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
+                    礦:<input type="text" id="r_o_${rowId}" value="5M" style="width:45px;" oninput="updateAll()">
+                    金:<input type="text" id="r_g_${rowId}" value="0" style="width:45px;" oninput="updateAll()">
+                `;
+                break;
+            case 'opt_chat':
+                container.innerHTML = `
+                    <select id="sel_opt_${rowId}" onchange="updateAll()">
+                        <option value="">(郵件寄送)</option>
+                        <option value="chat">chat (聯盟聊天室)</option>
+                    </select>
+                `;
+                break;
+            case 'opt_all':
+                container.innerHTML = `
+                    <select id="sel_opt_${rowId}" onchange="updateAll()">
+                        <option value="">(個人統計)</option>
+                        <option value="all">all (全聯盟摘要)</option>
+                    </select>
+                `;
+                break;
+            case 'shield':
+                container.innerHTML = `
+                    <select id="sel_opt_${rowId}" onchange="updateAll()">
+                        <option value="">(查詢郵件)</option>
+                        <option value="1">1 (完整狀態)</option>
+                        <option value="deploy">deploy (開啟護盾)</option>
+                    </select>
+                `;
+                break;
+            case 'adminbal':
+                container.innerHTML = `
+                    <select id="sel_mode_${rowId}" onchange="updateAll()">
+                        <option value="bank">(持有的資源)</option>
+                        <option value="chat">chat (發至聯盟聊天)</option>
+                        <option value="player">指定全域目標玩家</option>
+                    </select>
+                `;
+                break;
+            case 'setbal':
+                container.innerHTML = `
+                    類型: <select id="sel_rss_${rowId}" onchange="updateAll()">
+                        <option value="food">food</option>
+                        <option value="stone">stone</option>
+                        <option value="wood">wood</option>
+                        <option value="ore">ore</option>
+                        <option value="gold">gold</option>
+                    </select>
+                    數量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'setrsslimit':
+                container.innerHTML = `
+                    類型: <select id="sel_rss_${rowId}" onchange="updateAll()">
+                        <option value="gold">gold</option>
+                        <option value="food">food</option>
+                        <option value="stone">stone</option>
+                        <option value="wood">wood</option>
+                        <option value="ore">ore</option>
+                    </select>
+                    儲備量: <input type="text" id="inp_amt_${rowId}" value="100M" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'findtile':
+                container.innerHTML = `
+                    類型: <select id="sel_tile_${rowId}" onchange="updateAll()">
+                        <option value="food">${t.types.food}</option>
+                        <option value="stone">${t.types.stone}</option>
+                        <option value="wood">${t.types.wood}</option>
+                        <option value="ore">${t.types.ore}</option>
+                        <option value="gold">${t.types.gold}</option>
+                        <option value="gems">gems</option>
+                        <option value="any">${t.types.any}</option>
+                    </select>
+                    等級: <select id="sel_lvl_${rowId}" onchange="updateAll()">
+                        <option value="">(所有等級)</option>
+                        <option value="1">Lvl 1</option>
+                        <option value="2">Lvl 2</option>
+                        <option value="3">Lvl 3</option>
+                        <option value="4" selected>Lvl 4</option>
+                        <option value="5">Lvl 5</option>
+                    </select>
+                    頻道: <select id="sel_chat_${rowId}" onchange="updateAll()">
+                        <option value="">mail</option>
+                        <option value="chat">chat</option>
+                    </select>
+                `;
+                break;
+            case 'findmonster':
+                container.innerHTML = `
+                    名稱: <input type="text" id="inp_m_${rowId}" value="hardrox" style="width:90px;" oninput="updateAll()">
+                    等級: <select id="sel_lvl_${rowId}" onchange="updateAll()">
+                        <option value="">(所有等級)</option>
+                        <option value="1">Lvl 1</option>
+                        <option value="2" selected>Lvl 2</option>
+                        <option value="3">Lvl 3</option>
+                        <option value="4">Lvl 4</option>
+                        <option value="5">Lvl 5</option>
+                    </select>
+                    頻道: <select id="sel_chat_${rowId}" onchange="updateAll()">
+                        <option value="">mail</option>
+                        <option value="chat">chat</option>
+                    </select>
+                `;
+                break;
+            case 'findnest':
+                container.innerHTML = `
+                    等級: <select id="sel_lvl_${rowId}" onchange="updateAll()">
+                        <option value="3" selected>Lvl 3</option>
+                        <option value="1">Lvl 1</option>
+                        <option value="2">Lvl 2</option>
+                        <option value="4">Lvl 4</option>
+                        <option value="5">Lvl 5</option>
+                        <option value="any">any</option>
+                    </select>
+                    頻道: <select id="sel_chat_${rowId}" onchange="updateAll()">
+                        <option value="">mail</option>
+                        <option value="chat" selected>chat</option>
+                    </select>
+                `;
+                break;
+            case 'whitelist':
+                container.innerHTML = `
+                    階級: <select id="sel_rank_${rowId}" onchange="updateAll()">
+                        <option value="">(目前階級/查看)</option>
+                        <option value="R4" selected>R4</option>
+                        <option value="R3">R3</option>
+                        <option value="R2">R2</option>
+                        <option value="R1">R1</option>
+                    </select>
+                `;
+                break;
+            case 'blacklist':
+                container.innerHTML = `
+                    備註: <input type="text" id="inp_note_${rowId}" value="" placeholder="選填" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'addtitle':
+                container.innerHTML = `
+                    稱號: <input type="text" id="inp_title_${rowId}" value="chief" style="width:80px;" oninput="updateAll()">
+                `;
+                break;
+            case 'ca':
+                container.innerHTML = `
+                    編號: <input type="text" id="inp_num_${rowId}" value="1" style="width:40px;" oninput="updateAll()">
+                    模式: <select id="sel_f_${rowId}" onchange="updateAll()">
+                        <option value="">標準</option>
+                        <option value="f">f (強制)</option>
+                    </select>
+                `;
+                break;
+            case 'buildspam':
+                container.innerHTML = `
+                    次數: <input type="text" id="inp_amt_${rowId}" value="120" style="width:50px;" oninput="updateAll()">
+                    間隔(秒): <input type="text" id="inp_delay_${rowId}" value="7" style="width:40px;" oninput="updateAll()">
+                `;
+                break;
+            case 'setgather':
+                container.innerHTML = `
+                    模式: <select id="sel_mode_${rowId}" onchange="updateAll()">
+                        <option value="off">off</option>
+                        <option value="on">on</option>
+                        <option value="ron">ron (領域開)</option>
+                        <option value="roff">roff (領域關)</option>
+                    </select>
+                `;
+                break;
+            case 'hunt':
+                container.innerHTML = `
+                    模式: <select id="sel_mode_${rowId}" onchange="updateAll()">
+                        <option value="coords">座標 (x y)</option>
+                        <option value="off">off</option>
+                        <option value="on">on</option>
+                    </select>
+                    X: <input type="text" id="inp_x_${rowId}" value="150" style="width:45px;" oninput="updateAll()">
+                    Y: <input type="text" id="inp_y_${rowId}" value="166" style="width:45px;" oninput="updateAll()">
+                `;
+                break;
+            case 'opt_force':
+                container.innerHTML = `
+                    <select id="sel_opt_${rowId}" onchange="updateAll()">
+                        <option value="">一般召回</option>
+                        <option value="force">force (強制召回)</option>
+                    </select>
+                `;
+                break;
+            case 'coords':
+                container.innerHTML = `
+                    X: <input type="text" id="inp_x_${rowId}" value="243" style="width:45px;" oninput="updateAll()">
+                    Y: <input type="text" id="inp_y_${rowId}" value="209" style="width:45px;" oninput="updateAll()">
+                `;
+                break;
+            case 'migrate':
+                container.innerHTML = `
+                    K: <input type="text" id="inp_k_${rowId}" value="60" style="width:40px;" oninput="updateAll()">
+                    X: <input type="text" id="inp_x_${rowId}" value="200" style="width:45px;" oninput="updateAll()">
+                    Y: <input type="text" id="inp_y_${rowId}" value="900" style="width:45px;" oninput="updateAll()">
+                `;
+                break;
+            case 'text_input':
+                container.innerHTML = `
+                    參數/訊息: <input type="text" id="inp_text_${rowId}" value="${rowId==='reguser'?'423423958239':(rowId==='relocatekvk'?'60':'')}" style="width:120px;" oninput="updateAll()">
+                `;
+                break;
+        }
+    }
+
+    function updateAll() {
+        const p = getPrefix();
+        const player = getFormattedPlayer(); // 一律取用全域目標玩家名稱
+
+        commandsData.forEach((item) => {
+            const rowId = item.id;
+            const codeEl = document.getElementById(`code_${rowId}`);
+            const nameEl = document.getElementById(`name_${rowId}`);
+            if(!codeEl) return;
+
+            let realCmd = item.cmd.replace(/^!/, p);
+            if(nameEl) nameEl.innerText = realCmd;
+
+            let result = realCmd;
+
+            if(item.id === 'transfer') {
+                let rss = document.getElementById(`sel_rss_${rowId}`)?.value || '';
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '100M';
+                result = `${p}transfer ${player} ${rss} ${amt}`.replace(/\s+/g, ' ').trim();
+            }
+            else if(item.id === 'setacc') {
+                result = `${p}setacc ${player}`;
+            }
+            else if(['food','stone','wood','ore','gold'].includes(item.id)) {
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '5M';
+                result = `${p}${item.id} ${amt}`;
+            }
+            else if(item.id === 'rss') {
+                let f = document.getElementById(`r_f_${rowId}`)?.value || '0';
+                let s = document.getElementById(`r_s_${rowId}`)?.value || '0';
+                let w = document.getElementById(`r_w_${rowId}`)?.value || '0';
+                let o = document.getElementById(`r_o_${rowId}`)?.value || '0';
+                let g = document.getElementById(`r_g_${rowId}`)?.value || '0';
+                result = `${p}rss ${f} ${s} ${w} ${o} ${g}`;
+            }
+            else if(item.id.startsWith('donate')) {
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '5M';
+                result = `${p}${item.id} ${player} ${amt}`;
+            }
+            else if(item.id === 'pos' || item.id === 'quest') {
+                let opt = document.getElementById(`sel_opt_${rowId}`)?.value || '';
+                result = `${p}${item.id} ${opt}`.trim();
+            }
+            else if(item.id === 'stats') {
+                let opt = document.getElementById(`sel_opt_${rowId}`)?.value || '';
+                result = `${p}stats ${opt}`.trim();
+            }
+            else if(item.id === 'shield') {
+                let opt = document.getElementById(`sel_opt_${rowId}`)?.value || '';
+                result = `${p}shield ${opt}`.trim();
+            }
+            else if(item.id === 'pstats') {
+                result = `${p}pstats ${player}`;
+            }
+            else if(item.id === 'adminbal') {
+                let mode = document.getElementById(`sel_mode_${rowId}`)?.value || 'bank';
+                if(mode === 'chat') result = `${p}adminbal chat`;
+                else if(mode === 'player') result = `${p}adminbal ${player}`;
+                else result = `${p}adminbal`;
+            }
+            else if(item.id.startsWith('admin') && item.id !== 'adminbag' && item.id !== 'adminrss') {
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '5M';
+                result = `${p}${item.id} ${player} ${amt}`;
+            }
+            else if(item.id === 'adminrss') {
+                let f = document.getElementById(`r_f_${rowId}`)?.value || '0';
+                let s = document.getElementById(`r_s_${rowId}`)?.value || '0';
+                let w = document.getElementById(`r_w_${rowId}`)?.value || '0';
+                let o = document.getElementById(`r_o_${rowId}`)?.value || '0';
+                let g = document.getElementById(`r_g_${rowId}`)?.value || '0';
+                result = `${p}adminrss ${f} ${s} ${w} ${o} ${g} ${player}`;
+            }
+            else if(item.id === 'setbal') {
+                let rss = document.getElementById(`sel_rss_${rowId}`)?.value || 'food';
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '100M';
+                result = `${p}setbal ${player} ${rss} ${amt}`;
+            }
+            else if(item.id === 'setrsslimit') {
+                let rss = document.getElementById(`sel_rss_${rowId}`)?.value || 'gold';
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '100M';
+                result = `${p}setrsslimit ${rss} ${amt}`;
+            }
+            else if(item.id.startsWith('findtile')) {
+                let t = document.getElementById(`sel_tile_${rowId}`)?.value || 'food';
+                let l = document.getElementById(`sel_lvl_${rowId}`)?.value || '4';
+                let c = document.getElementById(`sel_chat_${rowId}`)?.value || '';
+                result = `${p}${item.id} ${t} ${l} ${c}`.replace(/\s+/g, ' ').trim();
+            }
+            else if(item.id.startsWith('findmonster')) {
+                let m = (document.getElementById(`inp_m_${rowId}`)?.value || 'hardrox').replace(/\s+/g, '_');
+                let l = document.getElementById(`sel_lvl_${rowId}`)?.value || '2';
+                let c = document.getElementById(`sel_chat_${rowId}`)?.value || '';
+                result = `${p}${item.id} ${m} ${l} ${c}`.replace(/\s+/g, ' ').trim();
+            }
+            else if(item.id.startsWith('findnest')) {
+                let l = document.getElementById(`sel_lvl_${rowId}`)?.value || '3';
+                let c = document.getElementById(`sel_chat_${rowId}`)?.value || 'chat';
+                result = `${p}${item.id} ${l} ${c}`.replace(/\s+/g, ' ').trim();
+            }
+            else if(item.id === 'whitelist') {
+                let rank = document.getElementById(`sel_rank_${rowId}`)?.value || '';
+                result = `${p}whitelist ${player} ${rank}`.replace(/\s+/g, ' ').trim();
+            }
+            else if(item.id === 'blacklist') {
+                let note = document.getElementById(`inp_note_${rowId}`)?.value || '';
+                result = `${p}blacklist ${player} ${note}`.replace(/\s+/g, ' ').trim();
+            }
+            else if(item.id === 'unlistwhite' || item.id === 'unlistblack') {
+                result = `${p}${item.id} ${player}`;
+            }
+            else if(item.id === 'addtitle') {
+                let title = (document.getElementById(`inp_title_${rowId}`)?.value || 'chief').replace(/\s+/g, '_');
+                result = `${p}addtitle ${player} ${title}`;
+            }
+            else if(item.id === 'joinca') {
+                let num = document.getElementById(`inp_num_${rowId}`)?.value || '1';
+                let f = document.getElementById(`sel_f_${rowId}`)?.value || '';
+                result = `${p}joinca ${num} ${f}`.trim();
+            }
+            else if(item.id === 'buildspam') {
+                let amt = document.getElementById(`inp_amt_${rowId}`)?.value || '120';
+                let delay = document.getElementById(`inp_delay_${rowId}`)?.value || '7';
+                result = `${p}buildspam ${amt} ${delay}`;
+            }
+            else if(item.id === 'setgather') {
+                let mode = document.getElementById(`sel_mode_${rowId}`)?.value || 'off';
+                result = `${p}setgather ${mode}`;
+            }
+            else if(item.id === 'hunt') {
+                let mode = document.getElementById(`sel_mode_${rowId}`)?.value || 'coords';
+                if(mode === 'coords') {
+                    let x = document.getElementById(`inp_x_${rowId}`)?.value || '150';
+                    let y = document.getElementById(`inp_y_${rowId}`)?.value || '166';
+                    result = `${p}hunt ${x} ${y}`;
+                } else {
+                    result = `${p}hunt ${mode}`;
+                }
+            }
+            else if(item.id === 'recall') {
+                let opt = document.getElementById(`sel_opt_${rowId}`)?.value || '';
+                result = `${p}recall ${opt}`.trim();
+            }
+            else if(item.id === 'camp' || item.id === 'campleader' || item.id === 'relocateCoords') {
+                let x = document.getElementById(`inp_x_${rowId}`)?.value || '243';
+                let y = document.getElementById(`inp_y_${rowId}`)?.value || '209';
+                let baseName = item.id === 'relocateCoords' ? 'relocate' : item.id;
+                result = `${p}${baseName} ${x} ${y}`;
+            }
+            else if(item.id === 'relocateRand') {
+                result = `${p}relocate rand`;
+            }
+            else if(item.id === 'migrate') {
+                let k = document.getElementById(`inp_k_${rowId}`)?.value || '60';
+                let x = document.getElementById(`inp_x_${rowId}`)?.value || '200';
+                let y = document.getElementById(`inp_y_${rowId}`)?.value || '900';
+                result = `${p}migrate ${k} ${x} ${y}`;
+            }
+            else if(item.ctrlType === 'text_input') {
+                let txt = document.getElementById(`inp_text_${rowId}`)?.value || '';
+                result = `${p}${item.id} ${txt}`.trim();
+            }
+
+            codeEl.innerText = result;
+        });
+    }
+
+    function filterCommands() {
+        const keyword = document.getElementById('searchKeyword').value.toLowerCase().trim();
+        const sections = ['balance', 'claim', 'info', 'admin', 'find', 'guild', 'control', 'move', 'link'];
+
+        sections.forEach(secKey => {
+            const block = document.querySelector(`.sec-${secKey}`);
+            if(!block) return;
+            const rows = block.querySelectorAll('.cmd-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const cmd = row.getAttribute('data-cmd');
+                const desc = row.getAttribute('data-desc');
+                if(keyword === '' || cmd.includes(keyword) || desc.includes(keyword)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            block.style.display = visibleCount === 0 ? 'none' : '';
+        });
+    }
+
+    function changeLanguage() {
+        renderPage();
+    }
+
+    function copyCode(elementId, btn) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const lang = document.getElementById('langSelect').value;
+            const originalText = btn.innerText;
+            btn.innerText = i18n[lang].copied;
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('copied');
+            }, 1200);
+        });
+    }
+
+    window.onload = () => {
+        renderPage();
+    };
+</script>
+
+</body>
+</html>
